@@ -1,16 +1,23 @@
+<div align="center">
+
+<img src="scam-warning.png" alt="Bild im Stil eines Video-Thumbnails: &quot;How is AI doing this? +$2,629/day&quot;, mit großem rotem &quot;SCAM&quot;-Stempel" width="300">
+
 # Anatomie eines mutmaßlichen 'Flash-Loan-Arbitrage-Bot'-Betrugsmusters
 
-[English version](README.md)
+Code-Prüfung und Messung auf einem Mainnet-Fork zu einem "Arbitrage-Bot", der auf YouTube beworben wurde.
 
-<p align="center">
-  <img src="scam-warning.png" alt="Bild im Stil eines Video-Thumbnails: &quot;How is AI doing this? +$2,629/day&quot;, mit großem rotem &quot;SCAM&quot;-Stempel" width="400">
-</p>
+[English](README.md) · **Deutsch**
+
+</div>
+
+---
 
 ## Kurzfassung (TL;DR)
 
 Dieses Repo dokumentiert die Analyse eines "Flash-Loan-Arbitrage-Bots", der in einem YouTube-Video beworben wurde. Der untersuchte Code ist unbekannter Herkunft, und ob er mit dem Contract aus dem Video übereinstimmt, ist ungeklärt. Die Code-Datei enthält behauptete Gewinnbelege, die nicht echt sein können. Ihre eigenen Tests zeigen nur deshalb Gewinn, weil sie die Preislücke selbst erzeugen. Auf einem unveränderten Mainnet-Fork hat unsere Messung keinen organischen Gewinn gefunden.
 
-**Solchen Code nicht deployen. Kein ETH an einen Contract aus so einem Video schicken.**
+> [!CAUTION]
+> **Solchen Code nicht deployen. Kein ETH an einen Contract aus so einem Video schicken.**
 
 ## Im untersuchten Video beobachtetes Muster
 
@@ -104,7 +111,8 @@ Aufbau: Foundry-Tests auf einem Mainnet-Fork bei Block 25733035 (Details unter "
 | 5.000 | −4,38 % | −4,75 % |
 | 20.000 | −14,60 % | −14,94 % |
 
-**Grenzen der Messung.** Sie deckt einen Block und ein Paar ab (USDC/WETH auf Uniswap V2 und SushiSwap). Sie nutzt nur Quotes, ohne Gas und ohne konkurrierende Bots. Sie ist keine Aussage über alle Märkte. Sie zeigt aber: In diesem Aufbau gab es den beworbenen Gewinn ohne künstliche Preisbewegung nicht.
+> [!NOTE]
+> **Grenzen der Messung.** Sie deckt einen Block und ein Paar ab (USDC/WETH auf Uniswap V2 und SushiSwap). Sie nutzt nur Quotes, ohne Gas und ohne konkurrierende Bots. Sie ist keine Aussage über alle Märkte. Sie zeigt aber: In diesem Aufbau gab es den beworbenen Gewinn ohne künstliche Preisbewegung nicht.
 
 ## So haben wir gemessen
 

@@ -1,16 +1,23 @@
+<div align="center">
+
+<img src="scam-warning.png" alt="Thumbnail-style image: &quot;How is AI doing this? +$2,629/day&quot;, stamped with a large red &quot;SCAM&quot;" width="300">
+
 # Anatomy of a Suspected 'Flash-Loan Arbitrage Bot' Scam Pattern
 
-[Deutsche Fassung](README.de.md)
+A code review and a mainnet-fork measurement of one "arbitrage bot" promoted on YouTube.
 
-<p align="center">
-  <img src="scam-warning.png" alt="Thumbnail-style image: &quot;How is AI doing this? +$2,629/day&quot;, stamped with a large red &quot;SCAM&quot;" width="400">
-</p>
+**English** · [Deutsch](README.de.md)
+
+</div>
+
+---
 
 ## TL;DR
 
 This repository documents the analysis of a "flash-loan arbitrage bot" promoted in a YouTube video. The analysed code is of unknown origin, and whether it matches the contract shown in the video is unresolved. The code file contains claimed evidence of profits that cannot be genuine. Its own tests only show profit because they create the price gap themselves. On an unmodified mainnet fork, our measurement found no organic profit.
 
-**Do not deploy such code. Do not send ETH to any contract from such a video.**
+> [!CAUTION]
+> **Do not deploy such code. Do not send ETH to any contract from such a video.**
 
 ## Pattern observed in the examined video
 
@@ -104,7 +111,8 @@ Setup: Foundry tests on a mainnet fork at block 25733035 (details under "How we 
 | 5,000 | −4.38 % | −4.75 % |
 | 20,000 | −14.60 % | −14.94 % |
 
-**Limits of the measurement.** It covers one block and one pair (USDC/WETH on Uniswap V2 and SushiSwap). It uses quotes only, with no gas and no competing bots. It is not a statement about all markets. It does show that, in this setup, the advertised profit did not exist without artificial price moves.
+> [!NOTE]
+> **Limits of the measurement.** It covers one block and one pair (USDC/WETH on Uniswap V2 and SushiSwap). It uses quotes only, with no gas and no competing bots. It is not a statement about all markets. It does show that, in this setup, the advertised profit did not exist without artificial price moves.
 
 ## How we measured
 
