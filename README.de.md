@@ -2,6 +2,10 @@
 
 [English version](README.md)
 
+<p align="center">
+  <img src="scam-warning.png" alt="Bild im Stil eines Video-Thumbnails: &quot;How is AI doing this? +$2,629/day – GPT6-Astra&quot;, mit großem rotem &quot;SCAM&quot;-Stempel" width="400">
+</p>
+
 ## Kurzfassung (TL;DR)
 
 Dieses Repo dokumentiert die Analyse eines "Flash-Loan-Arbitrage-Bots", der in einem YouTube-Video beworben wurde. Der untersuchte Code ist unbekannter Herkunft, und ob er mit dem Contract aus dem Video übereinstimmt, ist ungeklärt. Die Code-Datei enthält behauptete Gewinnbelege, die nicht echt sein können. Ihre eigenen Tests zeigen nur deshalb Gewinn, weil sie die Preislücke selbst erzeugen. Auf einem unveränderten Mainnet-Fork hat unsere Messung keinen organischen Gewinn gefunden.

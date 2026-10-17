@@ -2,6 +2,10 @@
 
 [Deutsche Fassung](README.de.md)
 
+<p align="center">
+  <img src="scam-warning.png" alt="Thumbnail-style image: &quot;How is AI doing this? +$2,629/day – GPT6-Astra&quot;, stamped with a large red &quot;SCAM&quot;" width="400">
+</p>
+
 ## TL;DR
 
 This repository documents the analysis of a "flash-loan arbitrage bot" promoted in a YouTube video. The analysed code is of unknown origin, and whether it matches the contract shown in the video is unresolved. The code file contains claimed evidence of profits that cannot be genuine. Its own tests only show profit because they create the price gap themselves. On an unmodified mainnet fork, our measurement found no organic profit.
