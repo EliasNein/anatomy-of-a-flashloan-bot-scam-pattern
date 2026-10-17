@@ -14,7 +14,7 @@ Code-Prüfung und Messung auf einem Mainnet-Fork zu einem "Arbitrage-Bot", der a
 
 ## Kurzfassung (TL;DR)
 
-Dieses Repo dokumentiert die Analyse eines "Flash-Loan-Arbitrage-Bots", der in einem YouTube-Video beworben wurde. Der untersuchte Code ist unbekannter Herkunft, und ob er mit dem Contract aus dem Video übereinstimmt, ist ungeklärt. Die Code-Datei enthält behauptete Gewinnbelege, die nicht echt sein können. Ihre eigenen Tests zeigen nur deshalb Gewinn, weil sie die Preislücke selbst erzeugen. Auf einem unveränderten Mainnet-Fork hat unsere Messung keinen organischen Gewinn gefunden.
+Dieses Repo dokumentiert die Analyse eines "Flash-Loan-Arbitrage-Bots", der in einem YouTube-Video beworben wurde. Der untersuchte Code stammt aus diesem Video, das uns persönlich bekannt ist, und wurde bewusst nicht in dieses Repo aufgenommen. Die Code-Datei enthält behauptete Gewinnbelege, die nicht echt sein können. Ihre eigenen Tests zeigen nur deshalb Gewinn, weil sie die Preislücke selbst erzeugen. Auf einem unveränderten Mainnet-Fork hat unsere Messung keinen organischen Gewinn gefunden.
 
 > [!CAUTION]
 > **Solchen Code nicht deployen. Kein ETH an einen Contract aus so einem Video schicken.**
@@ -32,7 +32,7 @@ Ein Flash Loan wird innerhalb einer einzigen Transaktion geliehen und zurückgez
 
 ## Der analysierte Code
 
-Der analysierte Code ist eine Kopie unbekannter Herkunft. Ob er mit dem Contract aus dem Video übereinstimmt, ist ungeklärt. Der analysierte Code wird hier nicht veröffentlicht.
+Der analysierte Code stammt aus einem konkreten YouTube-Video, das uns persönlich bekannt ist. Wir haben ihn bewusst nicht in dieses Repo hochgeladen, damit es nicht zu einer weiteren Quelle wird, aus der man ihn kopieren und deployen kann.
 
 Die Originaldatei verlangt in ihrem Kopfkommentar "1–2 ETH oder mehr". Der Contract selbst lehnt einfache ETH-Überweisungen aber ab (receive/fallback). Ein Off-Chain-Keeper-Skript in der Originaldatei verweigert den Live-Modus, solange sein eigenes Wallet weniger als 2 ETH hält. Mit den Standardeinstellungen handelt der Keeper nur über Flashbots-Bundles, weil das Senden an den öffentlichen Mempool abgeschaltet ist (Zeile 1754). Ein Bundle zahlt nur dann Gas, wenn es in einen Block aufgenommen wird. 2 ETH sind deshalb weit mehr, als der Bot braucht.
 
@@ -131,7 +131,7 @@ Der analysierte Code wird hier nicht veröffentlicht.
 
 ## Über dieses Repo
 
-Dieses Repo enthält nur diese Dokumentation, auf Englisch und Deutsch.
+Dieses Repo enthält nur diese Dokumentation, auf Englisch und Deutsch. Der analysierte Code ist bewusst nicht enthalten.
 
 ## Haftungshinweis
 

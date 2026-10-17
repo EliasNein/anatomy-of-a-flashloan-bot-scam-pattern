@@ -14,7 +14,7 @@ A code review and a mainnet-fork measurement of one "arbitrage bot" promoted on 
 
 ## TL;DR
 
-This repository documents the analysis of a "flash-loan arbitrage bot" promoted in a YouTube video. The analysed code is of unknown origin, and whether it matches the contract shown in the video is unresolved. The code file contains claimed evidence of profits that cannot be genuine. Its own tests only show profit because they create the price gap themselves. On an unmodified mainnet fork, our measurement found no organic profit.
+This repository documents the analysis of a "flash-loan arbitrage bot" promoted in a YouTube video. The analysed code comes from that video, which we know first-hand, and was deliberately left out of this repository. The code file contains claimed evidence of profits that cannot be genuine. Its own tests only show profit because they create the price gap themselves. On an unmodified mainnet fork, our measurement found no organic profit.
 
 > [!CAUTION]
 > **Do not deploy such code. Do not send ETH to any contract from such a video.**
@@ -32,7 +32,7 @@ A flash loan is borrowed and repaid within a single transaction. It needs no cap
 
 ## The code we analysed
 
-The analysed code is a copy of unknown origin. Whether it matches the contract shown in the video is unresolved. The analysed code is not published here.
+The analysed code comes from a specific YouTube video that we know first-hand. We deliberately did not upload it to this repository, so that this repository does not become another place to copy and deploy it from.
 
 The original file asks for "1–2 ETH or more" in its header comment. The contract itself, however, rejects plain ETH transfers (receive/fallback). An off-chain keeper script in the original file refuses live mode unless its own wallet holds at least 2 ETH. With its default settings, the keeper only trades through Flashbots bundles, because sending to the public mempool is disabled (line 1754). A bundle only pays gas if it is included in a block, so 2 ETH is far more than the bot needs.
 
@@ -131,7 +131,7 @@ The analysed code is not published here.
 
 ## About this repository
 
-This repository contains only this documentation, in English and German.
+This repository contains only this documentation, in English and German. The analysed code is deliberately not included.
 
 ## Disclaimer
 
