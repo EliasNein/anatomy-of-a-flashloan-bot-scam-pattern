@@ -3,7 +3,7 @@
 [English version](README.md)
 
 <p align="center">
-  <img src="scam-warning.png" alt="Bild im Stil eines Video-Thumbnails: &quot;How is AI doing this? +$2,629/day – GPT6-Astra&quot;, mit großem rotem &quot;SCAM&quot;-Stempel" width="400">
+  <img src="scam-warning.png" alt="Bild im Stil eines Video-Thumbnails: &quot;How is AI doing this? +$2,629/day&quot;, mit großem rotem &quot;SCAM&quot;-Stempel" width="400">
 </p>
 
 ## Kurzfassung (TL;DR)
@@ -27,7 +27,7 @@ Ein Flash Loan wird innerhalb einer einzigen Transaktion geliehen und zurückgez
 
 Der analysierte Code ist eine Kopie unbekannter Herkunft. Ob er mit dem Contract aus dem Video übereinstimmt, ist ungeklärt. Der analysierte Code wird hier nicht veröffentlicht.
 
-Die Originaldatei verlangt in ihrem Kopfkommentar "1–2 ETH oder mehr". Der Contract selbst lehnt einfache ETH-Überweisungen aber ab (receive/fallback). Ein Off-Chain-Keeper-Skript in der Originaldatei verweigert den Live-Modus, solange sein eigenes Wallet weniger als 2 ETH hält.
+Die Originaldatei verlangt in ihrem Kopfkommentar "1–2 ETH oder mehr". Der Contract selbst lehnt einfache ETH-Überweisungen aber ab (receive/fallback). Ein Off-Chain-Keeper-Skript in der Originaldatei verweigert den Live-Modus, solange sein eigenes Wallet weniger als 2 ETH hält. Mit den Standardeinstellungen handelt der Keeper nur über Flashbots-Bundles, weil das Senden an den öffentlichen Mempool abgeschaltet ist (Zeile 1754). Ein Bundle zahlt nur dann Gas, wenn es in einen Block aufgenommen wird. 2 ETH sind deshalb weit mehr, als der Bot braucht.
 
 Eine Falle im Contract haben wir nicht gefunden. Unsere Prüfung war rein statisch (siehe unten).
 
@@ -51,11 +51,27 @@ Die Zeilennummern in diesem Abschnitt beziehen sich auf die Originaldatei, die n
 
 - Zwei verschiedene Trades haben denselben Transaktions-Hash (Zeilen 395 und 498).
 - Mehrere Trade-Rechnungen ergeben einen Verlust, werden aber als Gewinn ausgewiesen. Ein Trade macht aus 100.000 USDC 100.412 USDC, nennt 1.040 USDC DEX-Gebühren und meldet trotzdem +255 USDC (Zeilen 381–393). Ein anderer macht aus 50.000 DAI 50.198 USDC, nennt 300 USDC Gebühren und meldet +133,50 USDC (Zeilen 339–351).
+- Dieser DAI-Trade beginnt mit DAI und endet mit USDC. Der Contract lehnt jede Route ab, die nicht mit demselben Asset beginnt und endet (`RouteMustStartAndEndOnAsset`). Der Trade kann also nicht gelaufen sein.
 - Einige Swaps sind unmöglich. Der Curve-3pool soll WETH liefern (Zeile 320), enthält aber kein WETH. Es werden Routen über Curve und Balancer aufgeführt, doch der Contract kann nur Router im Stil von Uniswap V2 und V3 aufrufen.
 - Eine "30-Tage"-Statistik (Zeile 501) enthält eine Gewinnserie von "34 Tagen" (Zeile 514).
-- Der "Mainnet Run" (Zeile 169) ist der Mock-Modus der Simulation. Er nutzt fest eingetragene, synthetische Pool-Reserven (Zeile 3769).
+- Der "Mainnet Run" (Zeile 169) ist der Mock-Modus der Simulation. Er nutzt fest eingetragene, synthetische Pool-Reserven (Zeile 3769). Seine Zahlen widersprechen sich außerdem. Ein Flash Loan über 1.000.000 USDC bringt netto +2.572,64 USDC (Zeile 183), der Execution Guard meldet aber einen erwarteten Nettogewinn von +12.572,64 USDC (Zeile 192). Ein Kredit über 250.000 USDC soll netto +3.184,27 USDC bringen (Zeile 185), also mehr als der über 1.000.000 USDC.
+- Der Kopf wirbt mit einem "12-hop"-Spread (Zeile 271), der Keeper sucht aber höchstens 5 Hops (Zeile 1676). Er wirbt mit 1inch-Unterstützung (Zeile 9), der Code implementiert 1inch aber nicht. Die Schlusszeilen versprechen "Guaranteed profit" und "Stable daily income" (Zeilen 1582–1583).
 
-**Kein Drainer gefunden, mit Einschränkungen.** Im Contract und in den Off-Chain-Skripten haben wir keine fest eingetragenen Empfängeradressen gefunden, kein `selfdestruct` oder `delegatecall` und keinen Code, der einen Private Key irgendwohin sendet. Der Flash-Loan-Callback prüft Aufrufer und Initiator.
+**Die Datei widerspricht sich selbst.** Ihr eigenes Simulationsskript stellt fest, dass auf einem gesunden Markt organische Spreads zwischen DEXs, die Gebühren und Prämie übersteigen, innerhalb eines Blocks von konkurrierenden Bots geschlossen werden (Zeilen 4337–4338).
+
+**Irreführende Sicherheitsfunktionen im Contract.**
+
+- Der Kopf wirbt mit einer "Emergency profit withdrawal with 24h timelock" (Zeile 630). Die Sperre gilt nur in den ersten 24 Stunden nach dem Deployment (Zeile 920) und danach nie wieder. `sweepToken` (Zeile 999) kann jeden Token abziehen, solange der Contract pausiert ist, ganz ohne Sperre.
+- Der Contract speichert eine Einstellung `slippageBps` (Zeile 870), liest sie aber nie. Der Slippage-Schutz hängt komplett an den Mindestbeträgen, die der Keeper übergibt.
+
+**Riskante Voreinstellungen im Keeper** (nur durch Lesen, der Keeper wurde nie ausgeführt).
+
+- `DRY_RUN` steht standardmäßig auf false, `ENABLE_LIVE` auf true (Zeilen 1739, 1761). Nach 24 Stunden Laufzeit und genug bestandenen Simulationen handelt der Bot ohne weitere Bestätigung live. `LIVE_FORCE` überspringt diese Schranke (Zeile 1976). Die Schranke wertet nur Simulationen aus, keine realisierten Ergebnisse.
+- `MAX_FLASH_AMOUNT` steht standardmäßig auf 0, das heißt unbegrenzt (Zeile 1735). Es gibt kein Tagesbudget für Gas oder Verluste.
+- Der Private Key wird im Klartext aus der Umgebungsvariable `KEEPER_PK` gelesen (Zeile 1716). Derselbe Key signiert Trades und Flashbots-Anfragen.
+- Ohne konfigurierten Startblock durchsucht die Pool-Suche nur die letzten 5.000 Blöcke, etwa 17 Stunden (Zeilen 2114, 2134). Etablierte, liquide Pools fehlen dann. Gefunden werden vor allem neu angelegte Pools und Tokens, eine Gruppe, in der Betrugs-Tokens häufig sind.
+
+**Kein Drainer gefunden, mit Einschränkungen.** Im Contract und in den Off-Chain-Skripten haben wir keine fest eingetragenen Empfängeradressen gefunden, kein `selfdestruct` oder `delegatecall` und keinen Code, der einen Private Key irgendwohin sendet. Der Flash-Loan-Callback prüft Aufrufer und Initiator. Außerdem haben wir keine versteckten Unicode-Steuerzeichen ("Trojan Source") gefunden, kein `eval`, keinen verschleierten oder base64-kodierten Code und keine Installationsskripte.
 
 Diese Ergebnisse beruhen nur auf Lesen. Die 16 Contract-Adressen in der Originaldatei wurden nicht gegen Etherscan geprüft.
 
